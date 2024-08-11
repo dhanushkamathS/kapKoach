@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Test} from 'src/schemas/Test.schema';
@@ -36,6 +36,9 @@ export class TestService {
 
     async generateTestReport(userId:string){
         let user = await this.userService.getUserById(userId)
+        if(!user || user?.testIds.length == 0){
+           return []
+        }
         console.log(user.testIds)
         let data = this.testModel.aggregate([
             // Match documents with the given testIds
@@ -67,9 +70,6 @@ export class TestService {
                   }
               }
             },
-            
-            // Sort by testId for consistency
-            { $sort: { testId: 1 } }
           ]);
           
 

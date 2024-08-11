@@ -1,4 +1,4 @@
-import { Controller, Get,Post,Body,Req, UseInterceptors, UploadedFile, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get,Post,Body,Req, UseInterceptors, UploadedFile, HttpException, HttpStatus, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/CreateUser.dto';
 import { GenerativeAIService } from 'src/generativeAI/generativeAI.service';
@@ -25,7 +25,7 @@ export class UserController {
 
   @Post('/generate')
   @UseInterceptors(FileInterceptor('file'))
-  async test(@UploadedFile() file: Express.Multer.File,@Body() body:GenerateAnswerDto){
+  async generate(@UploadedFile() file: Express.Multer.File,@Body() body:GenerateAnswerDto){
     let questionData = await this.questionService.fetchQuestionById(body.questionId)
     if(!questionData){
         throw new HttpException('Question not found', HttpStatus.NOT_FOUND)
@@ -60,8 +60,11 @@ export class UserController {
     return data
   }
 
-  @Post('/test')
-  async test1(){
+  @Get('/report')
+  async report(@Query('userId') userId: string){
+    if(!userId){
+        throw new HttpException('userId missing', HttpStatus.NOT_FOUND)
+    }
     // let testRecord = {
     //     clarity:1,
     //     relevance:1,
@@ -73,8 +76,8 @@ export class UserController {
     //     testId:"1234"}
     
     // let data = await this.testService.createTestRecord(testRecord)
-    let data = await this.testService.generateTestReport("5bf413244b")
-    
+    let data = await this.testService.generateTestReport(userId)
+
     // console.log(data)
     return data
   }

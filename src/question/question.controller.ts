@@ -15,7 +15,7 @@ export class QuestionController {
   @Get("/course")
   async getCourse(@Query('courseId') courseId: string): Promise<any> {
     if(!courseId){
-        throw new HttpException('course not found', HttpStatus.NOT_FOUND)
+        throw new HttpException('courseId missing', HttpStatus.NOT_FOUND)
     }
 
     let val = await this.questionService.fetchCourseById(courseId)
