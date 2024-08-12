@@ -52,7 +52,10 @@ export class UserController {
         correctness:data?.correctness,
         totalScore: (data?.clarity+data?.relevance+data?.completeness+data?.depthOfKnowledge+data?.correctness),
         questionId:questionData?.questionId,
-        testId:body?.testId}
+        testId:body?.testId,
+    }
+
+    data["transcribe"] = transcribedAudio
     
     await this.testService.createTestRecord(testRecord)
     await this.userService.addTestIDToUser(body.userId,body.testId)
