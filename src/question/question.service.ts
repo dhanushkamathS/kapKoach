@@ -22,7 +22,8 @@ export class QuestionService {
                 questionId: this.generateQuestionId(10),
                 courseId : "e5379b3640",
                 courseName:"GRE",
-                question : "what is a dangeling verb"
+                question : "Describe a challenge you faced in your personal or professional life and how did you come out of it?",
+                videoLink : "https://interviewprep.blr1.cdn.digitaloceanspaces.com/bpCAgt4kUY.mp4"
             }
             const createdQuestion = new this.questionModel(question)
             return createdQuestion.save()
